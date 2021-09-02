@@ -3,24 +3,12 @@ class Solution {
         var n = matrix.size
         var len = n-1
         for(i in 0 until n/2) {
-            var lui = i
-            var luj = i
-            var rui = i
-            var ruj = n-1-i
-            var ldi = n-1-i
-            var ldj = i
-            var rdi = n-1-i
-            var rdj = n-1-i
             for(j in 0 until len) {
-                var temp = matrix[lui][luj]
-                matrix[lui][luj] = matrix[ldi][ldj]
-                matrix[ldi][ldj] = matrix[rdi][rdj]
-                matrix[rdi][rdj] = matrix[rui][ruj]
-                matrix[rui][ruj] = temp
-                luj++
-                rui++
-                rdj--
-                ldi--
+                var temp = matrix[i][i+j]
+                matrix[i][i+j] = matrix[n-1-i-j][i]
+                matrix[n-1-i-j][i] = matrix[n-1-i][n-1-i-j]
+                matrix[n-1-i][n-1-i-j] = matrix[i+j][n-1-i]
+                matrix[i+j][n-1-i] = temp
             }
             len-=2
         }
