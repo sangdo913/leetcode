@@ -7,32 +7,12 @@
 class Solution:
     def rob(self, root: Optional[TreeNode]) -> int:
         if root == None: return 0
-        dic = {}
-        cnt = 0
-        Q = deque()
-        Q.append(root)
-        while Q:
-            now = Q.popleft()
-            dic[now] = cnt
-            cnt+=1
-            if now.left: Q.append(now.left)
-            if now.right: Q.append(now.right)
-            
-        dp = [[-1]*2 for _ in range(cnt)]
         
-        def dfs(node, robbed):
-            if node == None: return 0
-            hid = dic[node]
-            if(dp[hid][robbed] != -1): return dp[hid][robbed]
-            dp[hid][robbed] = 0
-            left,right = dfs(node.left,0), dfs(node.right, 0)
-            
-            if(robbed ==0):
-                left = max(left, dfs(node.left, 1))
-                right = max(right, dfs(node.right, 1))
+        def rob_tree(root):
+            if root == None: return [0,0]
+            left = rob_tree(root.left)
+            right = rob_tree(root.right)
+            return [max([left[i] + right[j] for i in range(2) for j in range(2)]), root.val + left[0] + right[0]]
         
-            dp[hid][robbed] = left+right + (node.val if robbed == 1 else 0)
-            return dp[hid][robbed]
-            
-        return max(dfs(root, 0), dfs(root,1))
+        return max(rob_tree(root))
         
